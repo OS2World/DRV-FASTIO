@@ -1,0 +1,19 @@
+!define BLANK ""
+E:\C\FastIO\iolib_AB.obj : E:\C\FastIO\iolib\iolib_AB.asm .AUTODEPEND
+ @E:
+ cd E:\C\FastIO
+ *wasm iolib\iolib_AB.asm -i=P:\Watcom\h;$(%toolkit)\c\os2h -mf -3s -w4 -e25&
+ -zq -zcm
+
+E:\C\FastIO\iolib_AB.lib : E:\C\FastIO\iolib_AB.obj .AUTODEPEND
+ @E:
+ cd E:\C\FastIO
+ %create iolib_AB.lb1
+!ifneq BLANK "iolib_AB.obj"
+ @for %i in (iolib_AB.obj) do @%append iolib_AB.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append iolib_AB.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 iolib_AB.lib @iolib_AB.lb1
+

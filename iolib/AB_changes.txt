@@ -1,0 +1,72 @@
+It tooks me some time to find out why the example program ever crashes. It 
+seems to me that Holger didn't clean up the stack correctly. Or maybe wasm or 
+wlib do something different to the stack than Holgers tools. With the changed 
+values from ADD ESP, 04 to ADD ESP, 20 and an additional ADD ESP, 16 all seems 
+to be ok. A good debugger is a real lifesaver ;-)
+   
+
+1) Wasm doesn't understand TITLE so comment out
+9c9
+< 	TITLE	FASTIO$ USER INTERFACE
+---
+> ;        TITLE   FASTIO$ USER INTERFACE
+
+
+2) FLAT with SEGMENT didn't work with wasm, but -mf option seems to do the same
+14c14
+< TEXT32	SEGMENT	DWORD FLAT PUBLIC 'CODE'
+---
+> TEXT32  SEGMENT DWORD PUBLIC 'CODE'
+17c17
+< BSS32	SEGMENT	DWORD FLAT PUBLIC 'BSS'
+---
+> BSS32   SEGMENT DWORD PUBLIC 'BSS'
+
+
+3) I ever wonderd why some compiler/assembler make leading/trailing or no 
+underscores for external names. Luckily these is easy to find and to adapt.
+318,320c318,320
+< 	EXTRN	_DosOpen:PROC
+< 	EXTRN	_DosDevIOCtl:PROC
+< 	EXTRN	_DosClose:PROC
+---
+>         EXTRN   DosOpen:PROC
+>         EXTRN   DosDevIOCtl:PROC
+>         EXTRN   DosClose:PROC
+343c343
+< 	CALL	_DosOpen		; call DosOpen
+---
+>         CALL    DosOpen                ; call DosOpen
+365c367
+< 	CALL	_DosDevIOCtl		; perform ioctl
+---
+>         CALL    DosDevIOCtl            ; perform ioctl
+
+
+4) I don't understand how Holgers orginal source should work with a wrong stack
+pointer before return. Had no one ever tried to get this driver working? Or is
+this introduced with the watcom tools? Maybe there is a compatibility switch 
+for one of the watcom tools which repairs this behaviour, but I didn't find it.
+So I made the changes in the source.  
+347d346
+< 	ADD ESP, 16         ; Added by AB (20050223)
+
+367c365
+< 	CALL	DosDevIOCtl		; perform ioctl
+---
+> 	CALL	_DosDevIOCtl		; perform ioctl
+
+374,375c372,373
+< 	CALL	DosClose		; close device
+< 	ADD	ESP, 20			; clean stack, changed from 4 by AB (20050307)
+---
+> 	CALL	_DosClose		; close device
+> 	ADD	ESP, 4			; clean stack
+
+383,384c381,382
+< 	CALL	DosClose
+< 	ADD	ESP, 20			; clean stack, changed from 4 by AB (20050307)
+---
+> 	CALL	_DosClose
+> 	ADD	ESP, 4			; clean stack
+

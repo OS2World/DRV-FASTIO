@@ -1,0 +1,47 @@
+9c9
+< ;	TITLE	FASTIOA$ USER INTERFACE
+---
+> 	TITLE	FASTIO$ USER INTERFACE
+14c14
+< TEXT32	SEGMENT	DWORD PUBLIC 'CODE'
+---
+> TEXT32	SEGMENT	DWORD FLAT PUBLIC 'CODE'
+17c17
+< BSS32	SEGMENT	DWORD PUBLIC 'BSS'
+---
+> BSS32	SEGMENT	DWORD FLAT PUBLIC 'BSS'
+318,320c318,320
+< 	EXTRN	DosOpen:PROC
+< 	EXTRN	DosDevIOCtl:PROC
+< 	EXTRN	DosClose:PROC
+---
+> 	EXTRN	_DosOpen:PROC
+> 	EXTRN	_DosDevIOCtl:PROC
+> 	EXTRN	_DosClose:PROC
+343c343
+< 	CALL	DosOpen		; call DosOpen
+---
+> 	CALL	_DosOpen		; call DosOpen
+347d346
+< 	ADD ESP, 16         ; Added by AB (20050223)
+351,352c350
+< ;	DB	"/dev/fastioab$",0           ; Dosn't work. Probably because name is more than 8 characters 
+< 	DB	"/dev/fastioa$",0
+---
+> 	DB	"/dev/fastio$",0
+367c365
+< 	CALL	DosDevIOCtl		; perform ioctl
+---
+> 	CALL	_DosDevIOCtl		; perform ioctl
+374,375c372,373
+< 	CALL	DosClose		; close device
+< 	ADD	ESP, 20			; clean stack, changed from 4 by AB (20050307)
+---
+> 	CALL	_DosClose		; close device
+> 	ADD	ESP, 4			; clean stack
+383,384c381,382
+< 	CALL	DosClose
+< 	ADD	ESP, 20			; clean stack, changed from 4 by AB (20050307)
+---
+> 	CALL	_DosClose
+> 	ADD	ESP, 4			; clean stack

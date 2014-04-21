@@ -1,0 +1,45 @@
+
+ FASTIO
+
+ Start     Length     Name                   Class
+ 0001:0000 0006AH     _DATA                  DATA
+ 0001:006A 00000H     CONST                  CONST
+ 0001:006A 00000H     _BSS                   BSS
+ 0002:0000 00204H     _TEXT                  CODE
+
+ Origin   Group
+ 0001:0   DGROUP
+
+  Address         Publics by Name
+
+ 0000:0000  Imp  DOS16PUTMESSAGE      (MSG.1)
+ 0002:0000       IOStrat
+ 0002:004E       _acquire_gdt
+ 0001:001E       _Device_Help
+ 0001:0069       _DiscardData
+ 0002:0202       _DiscardProc
+ 0002:01B6       _iostrategy
+ 0002:00CA       _io_call
+ 0001:0022       _io_gdt32
+ 0002:01A6       _io_open
+ 0002:000C       _SegLimit
+ 0001:002E       _start_msg
+ 0002:0025       _Verify
+ 0002:0000       __acrtused
+
+  Address         Publics by Value
+
+ 0000:0000  Imp  DOS16PUTMESSAGE      (MSG.1)
+ 0001:001E       _Device_Help
+ 0001:0022       _io_gdt32
+ 0001:002E       _start_msg
+ 0001:0069       _DiscardData
+ 0002:0000       __acrtused
+ 0002:0000       IOStrat
+ 0002:000C       _SegLimit
+ 0002:0025       _Verify
+ 0002:004E       _acquire_gdt
+ 0002:00CA       _io_call
+ 0002:01A6       _io_open
+ 0002:01B6       _iostrategy
+ 0002:0202       _DiscardProc

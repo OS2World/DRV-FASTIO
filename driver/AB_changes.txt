@@ -1,0 +1,54 @@
+At this time I didn't make any adaptions to the driver for Watcom compatibility.
+MASM5.10A is bundled with various ddk samples and I don't have any idea which 
+watcom parameters would be necessary for such a device driver. So I used MASM
+and LINK5.10.005. I used nmake from the ddk-tropez driver. Path in makefile 
+have to be adopted. 
+
+I've made only two changes to Holgers original source -
+
+1) 	Alger Pike in 'EDM/2 - A Hello World Device Driver' wrote changing qword 
+	to fword is necessary. I didn't check this by myself but MASM 5.10A gives 
+	a warning with qword, so I thought changing	to fword wouldn't harm. 
+221c221
+< 		sgdt	qword ptr [gdtsave]		; access the GDT ptr
+---
+> 		sgdt	fword ptr [gdtsave]		; access the GDT ptr
+
+2)	offset removes another MASM warning. 
+277c277
+< 		add	bx,iotbl	; add offset
+---
+> 		add	bx,offset iotbl	; add offset
+
+
+This are the tools I used to make the driver -
+
+[E:\C\FastIO\driver]nmake
+
+Operating System/2 Program Maintenance Utility
+Version 4.00.000 May 12 1999
+Copyright (C) IBM Corporation 1988-1999
+Copyright (C) Microsoft Corp. 1988-1991
+All rights reserved.
+
+        masm -MX -T -N fastio_a.asm;
+        masm -MX -T -N fastio_c.asm;
+        E:\c\tropez\ddk\base\tools\link /MAP /NOI /NOE /nod /exepack /packd /a:1
+6 /far fastio_a.obj fastio_c.obj,fastio.sys,,E:\c\tropez\ddk\base\lib\os2286.lib
+ E:\c\tropez\ddk\base\lib\os2286p.lib P:\MSC_51\LIB\SLIBCE.LIB,fastio.def
+
+Microsoft (R) Segmented-Executable Linker  Version 5.10.005
+Copyright (C) Microsoft Corp 1984-1989.  All rights reserved.
+
+        mapsym fastio.map
+
+Operating System/2 Symbol File Generator
+Version 4.00.000 May 12 1999
+Copyright (C) IBM Corporation 1988-1999
+Copyright (C) Microsoft Corp. 1988-1991.
+All rights reserved.
+
+
+No entry point, assume 0000:0100
+.
+

@@ -1,0 +1,23 @@
+!define BLANK ""
+E:\C\FastIO\example\ioexam_AB.obj : E:\C\FastIO\example\ioexam_AB.c .AUTODEPEND
+ @E:
+ cd E:\C\FastIO\example
+ *wcc386 ioexam_AB.c -i=P:\Watcom\h;P:\Watcom\h\os2 -w4 -e25 -zq -od -d2 -3s -b&
+t=os2 -mf
+
+E:\C\FastIO\example\IOEXAM_AB.exe : E:\C\FastIO\example\ioexam_AB.obj E:\C\&
+FastIO\iolib\iolib.h E:\C\FastIO\example\IOEXAM_Lib_AB.lib .AUTODEPEND
+ @E:
+ cd E:\C\FastIO\example
+ @%write IOEXAM_AB.lk1 FIL ioexam_AB.obj
+ @%append IOEXAM_AB.lk1 LIBR IOEXAM_Lib_AB.lib
+!ifneq BLANK ""
+ *wlib -q -n -b IOEXAM_AB.imp 
+ @%append IOEXAM_AB.lk1 LIBR IOEXAM_AB.imp
+!endif
+ *wlink name IOEXAM_AB d all SYS os2v2 op m libr IOEXAM_Lib_AB op maxe=2&
+5 op q op symf @IOEXAM_AB.lk1
+!ifneq BLANK ""
+ rc -i $[: -i P:\Watcom\h -i P:\Watcom\h\os2  IOEXAM_AB.exe
+!endif
+
