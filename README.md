@@ -6,7 +6,7 @@ Fastio Device Driver for direct port I/O. The driver provides a 32 bit R3->R0 ca
 
 LICENSE
 ===============
-* Can create derivative works. Include original copyright. 
+* Can create derivative works. AS  IS. Include original copyright. 
 
 COMPILE TOOLS
 ===============
@@ -14,7 +14,7 @@ COMPILE TOOLS
 
 AUTHORS
 ===============
-* 
+* Holger Veit
 
 LINKS
 ===============
